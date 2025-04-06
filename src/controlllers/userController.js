@@ -2,7 +2,14 @@ import {loginUser, registerUser} from "../services/userService.js"
 
 export const register = async(req,res)=>{
     try {
-        const user = await registerUser(req.body)
+        const {name,email,password,role} = req.body;
+        if (!name || !email || !password || !role) {
+            return res.status(400).json({
+                message: "All fields (name, email, password, role) are required",
+            });
+        }
+        
+        const user = await registerUser(name,email,password,role)
         if(!user){
             return res.status(400).json({
                 message:"User not created"

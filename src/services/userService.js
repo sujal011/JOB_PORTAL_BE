@@ -1,8 +1,7 @@
 import { generateToken, hashPassword, verifyPassword } from "../lib/utils.js";
 import { User } from "../models/index.js";
 
-export const registerUser = async (userData)=>{
-    const {name, email, password, role} = userData;
+export const registerUser = async (name,email,password,role)=>{
     const userExists = await User.findOne({email});
     if(userExists){
         throw new Error("User already exists");
@@ -11,9 +10,9 @@ export const registerUser = async (userData)=>{
     const user = await User.create({
         name,
         email,
-        hashedPassword,
+        password: hashedPassword,
         role
-    });
+    });    
     return user;
 }
 

@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 export async function hashPassword(password) {
     const saltRounds = 10;
@@ -11,7 +12,7 @@ export async function verifyPassword(password, hashedPassword) {
 }
 
 export const generateToken = (user) => {
-    return jwt.sign({ email: email }, process.env.JWT_SECRET, {
+    return jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
         expiresIn: '1d',
     });
 }
