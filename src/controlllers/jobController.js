@@ -14,7 +14,7 @@ export const createJob = async (req, res) => {
 
         const jobData = {
             ...req.body,
-            postedBy: req.user.id
+            postedBy: user.id
         };
 
         const job = await jobService.createJob(jobData);
