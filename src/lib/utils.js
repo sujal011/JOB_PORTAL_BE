@@ -12,7 +12,7 @@ export async function verifyPassword(password, hashedPassword) {
 }
 
 export const generateToken = (user) => {
-    return jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
+    return jwt.sign({ email: user.email,role:user.role }, process.env.JWT_SECRET, {
         expiresIn: '1d',
     });
 }
