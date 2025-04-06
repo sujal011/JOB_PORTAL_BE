@@ -1,4 +1,7 @@
-import {loginUser, registerUser} from "../services/userService.js"
+import {loginUser, registerUser,updateUserResume} from "../services/userService.js"
+import { uploadFile } from "../cloudinary/cloudinary.js";
+import { dataUri } from '../middleware/upload.js'
+import { getUserByEmail } from "../services/userService.js";
 
 export const register = async(req,res)=>{
     try {
@@ -54,3 +57,29 @@ export const login = async(req,res)=>{
         })
     }
 }
+
+
+export const uploadResume = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: "Resume file is required" });
+        }
+        if(req.file) {
+            const user = await getUserByEmail(req.user.email)
+            if (!user) {
+                return res.status(404).json({ message: "User not Loggedin properly" });
+            }
+            const file = dataUri(req).content;
+    
+            const resumeUrl = await uploadFile(file,`${user.email}_resume`)
+            const updatedUser = await updateUserResume(user.email, resumeUrl);
+            
+            return res.status(200).json({
+                message: "Resume uploaded successfully",
+                resume: updatedUser.resume,
+            });
+        }
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};

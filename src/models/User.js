@@ -18,7 +18,11 @@ const UserSchema = new mongoose.Schema({
         type: String,
         enum: ["jobseeker", "employer"],
         required: true,
-    }
+    },
+    resume: {
+        type: String, // URL to the uploaded resume
+        default: null, // Optional field
+    },
 }, { timestamps: true });
 
 export const User = mongoose.model("User",UserSchema)

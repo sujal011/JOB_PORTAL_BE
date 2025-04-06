@@ -32,3 +32,13 @@ export const loginUser = async (email, password) => {
 export const getUserByEmail = async (email) => {
     return await User.findOne({ email });
 }
+
+export const updateUserResume = async (email, resumeUrl) => {
+    const user = await getUserByEmail(email);
+    if (!user) {
+        throw new Error("User not found");
+    }
+    user.resume = resumeUrl;
+    await user.save();
+    return user;
+};
