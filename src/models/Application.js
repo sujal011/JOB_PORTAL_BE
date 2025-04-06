@@ -4,11 +4,13 @@ const ApplicationSchema = new mongoose.Schema({
     job: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Job",
+        unique: true,
         required: true,
     },
     applicant:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+        unique: true,
         required: true,
     },
     status:{

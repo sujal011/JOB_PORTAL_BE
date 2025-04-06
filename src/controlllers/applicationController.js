@@ -3,8 +3,6 @@ import { getUserByEmail } from "../services/userService.js";
 
 export const createApplication = async (req, res) => {
     try {
-        console.log("hello");
-        
         const user = await getUserByEmail(req.user.email)
         if (!user) {
             return res.status(404).json({ message: "User not logged in properly" });
