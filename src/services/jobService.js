@@ -1,6 +1,7 @@
 import { Job } from "../models/index.js";
 
 export const createJob = async (jobData) => {
+    jobData.skillsRequired = jobData.skillsRequired.split(',').map(skill => skill.trim());
     const job = await Job.create(jobData);
     return job;
 };
