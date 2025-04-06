@@ -42,3 +42,12 @@ export const updateUserResume = async (email, resumeUrl) => {
     await user.save();
     return user;
 };
+
+export const updateUser = async (email,userData) =>{
+    const user = await getUserByEmail(email);
+    if (!user) {
+        throw new Error("User not found");
+    }
+    user = userData
+    return await user.save()
+}

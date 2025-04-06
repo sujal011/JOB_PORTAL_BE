@@ -57,7 +57,7 @@ export const getJobsBySkills = async (req, res) => {
 
 export const getEmployerJobs = async (req, res) => {
     try {
-        const jobs = await jobService.getJobsByEmployer(req.user.id);
+        const jobs = await jobService.getJobsByEmployer(req.user.email);
         return res.json(jobs);
     } catch (error) {
         return res.status(500).json({ message: error.message });

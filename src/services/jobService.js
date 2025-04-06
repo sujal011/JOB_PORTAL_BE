@@ -1,4 +1,5 @@
 import { Job } from "../models/index.js";
+import { getUserByEmail } from "./userService.js";
 
 export const createJob = async (jobData) => {
     jobData.skillsRequired = jobData.skillsRequired.split(',').map(skill => skill.trim());
@@ -21,8 +22,9 @@ export const getJobsBySkills = async (skills) => {
     return await Job.find({ skillsRequired: { $in: skills } });
 };
 
-export const getJobsByEmployer = async (userId) => {
-    return await Job.find({ postedBy: userId });
+export const getJobsByEmployer = async (email) => {
+    const user = await getUserByEmail(email)
+    return await Job.find({ postedBy: user._id });
 };
 
 export const deleteJob = async (jobId, userId) => {

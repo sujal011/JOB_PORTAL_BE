@@ -3,6 +3,8 @@ import { getUserByEmail } from "../services/userService.js";
 
 export const createApplication = async (req, res) => {
     try {
+        console.log("hello");
+        
         const user = await getUserByEmail(req.user.email)
         if (!user) {
             return res.status(404).json({ message: "User not logged in properly" });
@@ -11,11 +13,13 @@ export const createApplication = async (req, res) => {
         if (user.role !== "jobseeker") {
             return res.status(403).json({ message: "Only job seekers can apply for jobs." });
         }
+        if(!user.resume){
+            return res.status(403).json({ message: "Upload your resume first." });
+        }
         const { jobId } = req.body;
         const applicationData = {
             job:jobId,
             applicant: user._id,
-            status: "pending",
         };
         const application = await applicationService.createApplication(applicationData);
         if(!application) {
