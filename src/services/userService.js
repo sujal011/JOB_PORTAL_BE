@@ -51,3 +51,10 @@ export const updateUser = async (email,userData) =>{
     user = userData
     return await user.save()
 }
+
+export const saveTheJob = async (userId, jobId) => {
+    const updateData = {
+        $addToSet: { savedJobs: jobId } // Use $addToSet to avoid duplicates
+    };
+    return await User.findByIdAndUpdate(userId, updateData, { new: true });
+}

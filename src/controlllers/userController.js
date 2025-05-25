@@ -1,4 +1,4 @@
-import {loginUser, registerUser,updateUserResume} from "../services/userService.js"
+import {loginUser, registerUser,saveTheJob,updateUserResume} from "../services/userService.js"
 import { uploadFile } from "../cloudinary/cloudinary.js";
 import { dataUri } from '../middleware/upload.js'
 import { getUserByEmail } from "../services/userService.js";
@@ -83,3 +83,30 @@ export const uploadResume = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+export const saveTheJobApi = async (req, res) => {
+    try{
+        const user = await getUserByEmail(req.user.email);  
+        if (!user) {
+            return res.status(404).json({ message: "User not logged in properly" });
+        }
+        if (user.role !== "jobseeker") {
+            return res.status(403).json({ message: "Only jobseekers can save jobs." });
+        }
+        const jobId = req.body.jobId;
+        if (!jobId) {
+            return res.status(400).json({ message: "Job ID is required" });
+        }
+        const updatedUser = await saveTheJob(user._id, jobId);
+        if (!updatedUser) {
+            return res.status(404).json({ message: "Job not found or already saved" });
+        }
+        return res.status(200).json({
+            message: "Job saved successfully",
+            savedJobs: updatedUser.savedJobs,
+        });      
+
+    }catch(error){
+        return res.status(500).json({ message: error.message });
+    }
+}

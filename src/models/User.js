@@ -23,6 +23,10 @@ const UserSchema = new mongoose.Schema({
         type: String, // URL to the uploaded resume
         default: null, // Optional field
     },
+    savedJobs:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Job"
+    }]
 }, { timestamps: true });
 
 export const User = mongoose.model("User",UserSchema)
