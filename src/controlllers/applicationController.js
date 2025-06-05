@@ -15,6 +15,10 @@ export const createApplication = async (req, res) => {
             return res.status(403).json({ message: "Upload your resume first." });
         }
         const { jobId } = req.body;
+        const alreadyApplied = await applicationService.hasAlreadyApplied(user._id, jobId);
+        if (alreadyApplied) {
+            return res.status(400).json({ message: "Already applied to this job." });
+        }
         const applicationData = {
             job:jobId,
             applicant: user._id,
