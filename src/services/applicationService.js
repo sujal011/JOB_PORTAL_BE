@@ -1,5 +1,14 @@
 import { Application } from "../models/index.js";
 
+export const hasAlreadyApplied = async (applicantId, jobId) => {
+    try {
+        const existingApplication = await Application.findOne({ applicant: applicantId, job: jobId });
+        return !!existingApplication;
+    } catch (error) {
+        throw new Error(`Failed to check existing application: ${error.message}`);
+    }
+};
+
 export const createApplication = async (applicationData) => {
     try {
         const newApplication = new Application(applicationData);
