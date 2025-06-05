@@ -9,7 +9,6 @@ const ApplicationSchema = new mongoose.Schema({
     applicant:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        unique: true,
         required: true,
     },
     status:{
